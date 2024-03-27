@@ -9,16 +9,26 @@ using Newtonsoft.Json.Linq;
 
 namespace GradeBook.GradeBooks
 {
-    public class BaseGradeBook
+    abstract public class BaseGradeBook
     {
         public string Name { get; set; }
         public List<Student> Students { get; set; }
+       
+        public bool IsWeighted { get; set; }
 
-        public BaseGradeBook(string name)
+         public BaseGradeBook(string name , bool isWeighted)
         {
-            Name = name;
+            Name =name;
+            IsWeighted = isWeighted;
             Students = new List<Student>();
         }
+
+        //public BaseGradeBook(string name,GradeBookType type)
+        //{
+          //  Name = name;
+            //Type = type;
+              //Students = new List<Student>();
+                //}
 
         public void AddStudent(Student student)
         {
@@ -267,4 +277,96 @@ namespace GradeBook.GradeBooks
             return JsonConvert.DeserializeObject(json, gradebook);
         }
     }
+    public class StandardGradeBook : BaseGradeBook
+    {
+        public GradeBookType Type { get; set; }
+        public StandardGradeBook(string name,bool isWeighted) : base(name, isWeighted)
+        {
+
+            Name = name;
+            Type = GradeBookType.Standard;
+            IsWeighted = isWeighted;
+            Students = new List<Student>();
+        }        
+    }
+    public class RankedGradeBook : BaseGradeBook
+    {
+        public GradeBookType Type { get; set; }
+        public RankedGradeBook(string name ,bool isWeighted) : base(name, isWeighted)
+        {
+
+            Name = name;
+            Type = GradeBookType.Ranked;
+            IsWeighted = isWeighted;
+            Students = new List<Student>();
+        }
+        public char GetLetterGrade(string name,char Grade)
+        {
+            if (Students.Count < 5)
+            {
+                throw new Exception();
+            }
+            int SumaGrade = 0;
+            foreach (Student student in Students)
+            {
+                switch (student.LetterGrade)
+                {
+                    case 'A':
+                        SumaGrade += 5;
+                        break;
+                    case 'B':
+                        SumaGrade += 4;
+                        break;
+                    case 'C':
+                        SumaGrade += 3;
+                        break;
+                    case 'D':
+                        SumaGrade += 2;
+                        break;
+                    case 'F':
+                        SumaGrade += 1;
+                        break;
+                }
+            }
+            if (Grade >= 4/5* SumaGrade)
+                return 'A';
+            else if (Grade >= 3 / 5 * SumaGrade / Students.Count)
+                return 'B';
+            else if (Grade >= 2 / 5 * SumaGrade / Students.Count)
+                return 'C';
+            else if (Grade >= 1 / 5 * SumaGrade / Students.Count)
+                return 'D';
+            else
+                return 'F';
+        }
+        override public void CalculateStatistics()
+        {
+            if (Students.Count < 5)
+            {
+                Console.WriteLine("Ranked grading requires at least 5 students.");
+               
+            }
+            else
+            {
+                base.CalculateStatistics();
+            }
+
+        }
+
+         override public void  CalculateStudentStatistics(string name)
+        {
+            if (Students.Count < 5)
+            {
+                Console.WriteLine("Ranked grading requires at least 5 students.");
+
+            }
+            else
+            {
+                base.CalculateStudentStatistics(name);
+            }
+
+        }
+
+    }
+
 }
