@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "rypBdfgzEtxYxp+odVVTJLec6yUvw5hEvpwY/IlWwEkY/9vE1Uoc76NuWzjgaxBV+W/LLPHHAYht+C2lRWDiRg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\TomBu\\Documents\\Projekt\\Git-Hub_Grade_Book\\Grade_Book\\cs-lab01-GradeBookApplication-master\\GradeBook\\GradeBook.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\TomBu\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
